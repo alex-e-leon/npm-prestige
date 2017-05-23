@@ -1,0 +1,33 @@
+{
+  "name": "npm-prestige",
+  "version": "1.0.0",
+  "description": "Finds and summarizes duplicate npm dependencies",
+  "main": "index.js",
+  "bin": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-e-leon/npm-prestige.git"
+  },
+  "author": "Alex Leon <alex@leon.st>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alex-e-leon/npm-prestige/issues"
+  },
+  "homepage": "https://github.com/alex-e-leon/npm-prestige#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "execa": "^0.6.3",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "npm",
+    "dupes",
+    "duplication",
+    "dependencies",
+    "cli"
+  ]
+}
