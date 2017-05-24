@@ -3,15 +3,18 @@ const _ = require('lodash');
 
 function mapDependencies(dupeList, path, dependencies) {
   _.forEach(dependencies, (meta, name) => {
-    _.update(dupeList, [name, meta.version], (paths) => {
-      if (paths) {
-        paths.push(path ? path : 'this package');
-        return paths;
-      } 
-      return [path ? path : 'this package']; 
-    });
+    if (!meta._deduped) {
+      // Don't add it if npm has deduped the package. Relies on npm internals so not exactly safe
+      _.update(dupeList, [name, meta.version], (paths) => {
+        if (paths) {
+          paths.push(path ? path : 'this package');
+          return paths;
+        } 
+        return [path ? path : 'this package']; 
+      });
+    }
 
-    if (meta.dependencies) {
+    if (meta.dependencies && typeof meta.dependencies === 'object') {
       const nextPath = path ? `${path} -> ${name}@${meta.version}` : `${name}@${meta.version}`;
       mapDependencies(dupeList, nextPath, meta.dependencies);
     }
@@ -46,7 +49,7 @@ module.exports = function prestige() {
   // ls --json provides us with output we can work with
   // and we run --prod because we don't care about duplicate devDependencies
 
-  return execa('npm', ['ls', '--json', '--prod']).then(({ stdout: npmStdOut }) => {
+  return execa('npm', ['ls', '--json', '--prod', '--long']).then(({ stdout: npmStdOut }) => {
     return formatDupes(JSON.parse(npmStdOut));
   })
   .catch(err => {
