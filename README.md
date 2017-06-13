@@ -3,6 +3,7 @@
 Check and report duplicate -> `dependencies@2.0.1` dependencies -> `duplicate@1.0.3` inside your installed npm modules
 
 ## Usage
+
 `npm -g i npm-prestige` or 
 `yarn global add npm-prestige`
 
@@ -23,3 +24,9 @@ _Note that browserify and some other tools match and dedupe based on the code si
 Updating your dependencies to all use the same semver range of packages can reduce the final bundle size of your packages.
 
 npm-prestige reports all duplicate dependencies that it finds installed. It uses `npm ls` under the hood, and only reports un-deduped packages.
+
+## NPM version
+
+Since `npm-prestige` uses npm under the hood, it has a hidden dependency on the version of npm you've globally installed.
+It works fine with all versions of npm that I've tested (`4.1.0` and up), but prints nicer output with `>4.6.0`.
+Please submit an issue if it doesn't work with a specific version of npm
