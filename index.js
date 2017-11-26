@@ -9,8 +9,8 @@ function mapDependencies(dupeList, path, dependencies) {
         if (paths) {
           paths.push(path ? path : 'this package');
           return paths;
-        } 
-        return [path ? path : 'this package']; 
+        }
+        return [path ? path : 'this package'];
       });
     }
 
@@ -49,12 +49,15 @@ module.exports = function prestige() {
   // ls --json provides us with output we can work with
   // and we run --prod because we don't care about duplicate devDependencies
 
-  return execa('npm', ['ls', '--json', '--prod', '--long']).then(({ stdout: npmStdOut }) => {
+  return execa('npm', ['ls', '--json', '--prod', '--long'], { maxBuffer: 20000000 }).then(({ stdout: npmStdOut }) => {
     return formatDupes(JSON.parse(npmStdOut));
   })
   .catch(err => {
     try {
-      console.log(err.stderr);
+      console.log(err.message);
+      if (err.stderr) {
+        console.log(err.stderr);
+      }
       return formatDupes(JSON.parse(err.stdout));
     } catch(e) {
       throw new Error("Couldn't get data from npm -ls", e);
